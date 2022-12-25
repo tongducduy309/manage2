@@ -1,1 +1,200 @@
 /* You can add global styles to this file, and also import other style files */
+:root{
+  --blue--1:rgb(54, 162, 235);
+  --blue--2:rgba(54, 163, 235, 0.562);
+  --white--1:rgb(255,255,255);
+  --grey--1:rgba(245, 245, 245, 1);
+  --grey--2:rgb(222, 221, 221);
+  --orange--1:rgb(255,128,64);
+  --orange--2:#fe791a;
+  --black--1:rgb(0,0,0);
+  --red--1:#dc3545;
+  font-family:Arial, Helvetica, sans-serif;
+}
+.flex-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.pos-center{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.flex-right{
+  justify-content: right;
+  align-items: center;
+}
+
+.flex-center-hoz{
+  display: flex;
+  justify-content: center;
+}
+
+.text-center{
+  text-align: center;
+}
+
+.--row--sp--between{
+  justify-content: space-between;
+}
+
+.flex-center-ver{
+  display: flex;
+  align-items: center;
+}
+
+
+.--row{
+  display:flex;
+  -ms-flex-wrap:wrap;
+  flex-wrap:wrap;
+  margin-right:-15px;
+  margin-left:-15px}
+.--col{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: max-content;
+}
+.--col--1{
+  display: flex;
+  flex:1;
+}
+.--col--2{
+  display: flex;
+  flex:2;
+}
+
+.--col--3{
+  display: flex;
+  flex:3;
+}
+.--col--4{
+  display: flex;
+  flex:4;
+}
+.--col--5{
+  display: flex;
+  flex:5;
+}
+.--col--6{
+  display: flex;
+  flex:6;
+}
+.--col--7{
+  display: flex;
+  flex:7;
+}
+.--col--8{
+  display: flex;
+  flex:8;
+}
+.--col--9{
+  display: flex;
+  flex:9;
+}
+
+.--mg--top--10{
+  margin-top: 10px;
+}
+.--mg--top--30{
+  margin-top: 30px;
+}
+
+.--mg--bottom--20{
+  margin-bottom: 20px;
+}
+.--mg--right--10{
+  margin-right: 10px;
+}
+
+.--pd--right--50{
+  padding-right: 50px;
+}
+.--pd--left--20{
+  padding-left: 20px;
+}
+.--pd--right--c10{
+  padding-right: 10%;
+}
+.--pd--lr--c10{
+  padding: 0 10%;
+}
+
+/* Color */
+.txBlue{
+  color: var(--blue--1);
+}
+.txWhite{
+  color: var(--white--1);
+}
+.txGrey{
+  color: var(--grey--1);
+}
+.txGrey{
+  color: var(--grey--2);
+}
+.txBlack{
+  color: var(--black--1);
+}
+.txOrange{
+  color: var(--orange--1);
+}
+.bgBlue{
+  background-color: var(--blue--1);
+}
+.bgGrey{
+  background-color: var(--grey--1);
+}
+.bgOrange-2{
+  background-color: var(--orange--2);
+}
+
+/* Font Weight */
+.fw--bold{
+  font-weight: bold;
+}
+
+.--border--bottom{
+  border-bottom: 1px solid rgba(120,120,120,.3);
+}
+.--border{
+  border: 1px solid rgba(120,120,120,.5);
+}
+.--border--color--grey--2{
+  border-color: var(--grey--2) ;
+}
+
+.--border--none{
+  border: none;
+}
+
+.--groupItem span{
+  font-size: 16px;
+}
+
+.width--c100{
+  width: 100%;
+}
+
+button{
+  border: none;
+}
+
+button[disabled]{
+  /* background-color: var(--blue--2); */
+  opacity: .7;
+}
+.back{
+  cursor: pointer;
+}
+
+
+
+
+

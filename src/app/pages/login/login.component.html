@@ -1,0 +1,23 @@
+<div class="flex-center">
+  <div class="card">
+    <h2 class="text-center txBlue">ĐĂNG NHẬP</h2>
+    <form action="" [formGroup]="form" >
+      <div class="groupItem">
+        <label for="">Tài khoản</label>
+        <input type="text" placeholder="Tên đăng nhập / Email " id="username" formControlName="username" #username (focus)="form.get('error').setValue('')">
+      </div>
+      <div class="groupItem">
+        <label for="">Mật khẩu</label>
+        <input type="text" placeholder="Mật khẩu" id="password" formControlName="password" #password (focus)="form.get('error').setValue('')" >
+      </div>
+      <input *ngIf="form.get('error').value!=''" class="flex-center-hoz" style="color: var(--bs-red); border:0;outline: 0;width: 100%;text-align: center;" formControlName="error" readonly >
+
+      <span class="flex-center-hoz">Quên mật khẩu?</span>
+      <div class="flex-center-hoz">
+        <button class="bgBlue txWhite" (click)="onLogin(username.value,password.value)" >ĐĂNG NHẬP</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+

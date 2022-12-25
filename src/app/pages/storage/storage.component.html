@@ -1,0 +1,428 @@
+<div class="back" (click)="controlTab()">
+  <i class="fa-solid fa-angle-left"></i>
+  <span>Trở lại</span>
+</div>
+<div class="flex-center">
+  <div class="card container" *ngIf="tab==0">
+    <div class="--border--bottom --mg--bottom--20">
+      <div class="row">
+        <div class="col-md-8 flex-center-ver">
+          <div class="col-md-12 row">
+            <h4 class="txBlue col-md-5">Danh sách sản phẩm</h4>
+            <div class="col-md-4">
+              <div class="search">
+                <input type="text" placeholder="Tìm kiếm tên sản phẩm, mã sản phẩm" #inputSearch (input)="searchProduct(inputSearch.value)">
+                <i class="fa-solid fa-xmark" *ngIf="inputSearch.value!=''" (click)="inputSearch.value='';this.filterProduct(this.products)"></i>
+                <i class="fa-solid fa-magnifying-glass" style="color: #000;" (click)="searchProduct(inputSearch.value)" *ngIf="inputSearch.value==''" ></i>
+
+              </div>
+
+            </div>
+            <div class="col-md-3">
+              <select name="" id="" class="--border--none width--c100" (change)="filterCategory(chooseCategory.value)" #chooseCategory>
+                <option value="Tất cả" selected="selected">Tất cả</option>
+                <option [value]="category" *ngFor="let category of this.categories;index as i">{{category}}</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-4 flex-center-ver listButton">
+          <div class="button --border" style="padding: 0 5px;" (click)="boxActive=1">
+            <span class="text-center" style="margin: 0;">Danh mục</span>
+          </div>
+          <div class="button --border">
+            <i class="fa-solid fa-qrcode"></i>
+            <span>Tạo dữ liệu</span>
+          </div>
+          <div class="button bgBlue txWhite" (click)="tab=1;resetFormAddProduct()">
+            <i class="fa-solid fa-plus"></i>
+            <span>Thêm</span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="--tabs">
+          <span class="--tab --tab--active" #allowTrue (click)="this.allowActive=true;setIsAllow(allowTrue,allowFalse);">Cho bán</span>
+          <span class="--tab" #allowFalse (click)="this.allowActive=false;setIsAllow(allowFalse,allowTrue);">Không cho bán</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <span>Tổng <span id="amountOfProducts" class="txOrange">{{viewProduct.length}}</span> sản phẩm</span>
+    </div>
+    <div class="--table">
+      <div class="title bgGrey txBlack fw--bold">
+        <div class="row">
+          <div class="--col--1 flex-center-hoz">
+            <span>Hình ảnh</span>
+          </div>
+          <div class="--col--3" (click)="sortByNameProduct()">
+            <span>Tên sản phẩm</span>
+            <i class="fa-solid fa-sort-up" *ngIf="this.sortByNameProductActive"></i>
+            <i class="fa-solid fa-sort-down" *ngIf="!this.sortByNameProductActive"></i>
+          </div>
+          <div class="--col--1">
+            <span>Đơn vị</span>
+          </div>
+          <div class="--col--1">
+            <span>Barcode</span>
+          </div>
+          <div class="--col--2">
+            <span>Danh mục</span>
+            <i class="fa-solid fa-sort-up"></i>
+          </div>
+          <div class="--col--2">
+            <span>Thương hiệu</span>
+            <i class="fa-solid fa-sort-up"></i>
+          </div>
+          <div class="--col--1 flex-right">
+            <span>Giá bán</span>
+          </div>
+        </div>
+      </div>
+      <div class="table--body">
+        <div class="table--body--content">
+          <div class="table--row" *ngFor="let pdt of this.viewProduct|slice:startPage:endPage;index as i" >
+            <div class="row" (click)="modifyProduct($event,pdt)">
+              <div class="--col--1 flex-center-hoz">
+                <img [src]="pdt.urlImg" alt="">
+              </div>
+              <div class="--col--3 txBlue">
+                <span>{{pdt.name}}</span>
+              </div>
+              <div class="--col--1">
+                <select name="" id="" class="--border" (change)="changeUnit(i,chooseUnit.value)" #chooseUnit>
+                  <option [value]="unit" *ngFor="let unit of this.units;index as i" [selected]="unit==this.pdt.unit">{{unit}}</option>
+                </select>
+              </div>
+              <div class="--col--1">
+                <span>{{pdt.barcode}}</span>
+              </div>
+              <div class="--col--2">
+                <span>{{pdt.category}}</span>
+              </div>
+              <div class="--col--2">
+                <span>{{pdt.trademark}}</span>
+              </div>
+              <div class="--col--1 flex-right txBlue">
+                <span>{{pdt.retailPrice}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom row flex-right">
+        <div class="buttonPG --border" (click)="previousPagination()">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="txtPG flex-center --border">
+          <span id="currentPag">{{currentPagination}}</span>
+        </div>
+        <div class="buttonPG  --border" (click)="nextPagination()">
+          <i class="fa-solid fa-chevron-right "></i>
+        </div>
+        <select name="" id="" #itemOnPage class="--border" [value]="10" (change)="changeItemOnPage(itemOnPage)">
+          <!-- <option value="" disabled="disabled" selected="selected"></option> -->
+          <option value="5">5 / trang</option>
+          <option value="10">10 / trang</option>
+          <option value="20">20 / trang</option>
+        </select>
+
+
+      </div>
+    </div>
+  </div>
+  <div class="card container" *ngIf="tab==1" [formGroup]="addProductForm">
+    <div class="--mg--bottom--20">
+      <div class="row">
+        <div class="col-md-7 flex-center-ver">
+          <h4 class="txBlue --col--3">Thêm sản phẩm</h4>
+        </div>
+        <div class="col-md-5 flex-center-ver listButton">
+          <button class="button bgBlue txWhite" (click)="addProduct()" [disabled]="!addProductForm.valid">
+            <i class="fa-regular fa-floppy-disk"></i>
+            <span>Lưu</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <form class="addProduct">
+      <div class="row flex-center-ver">
+        <div class="col-md-2">
+          <input type="file" style="width: 0;height: 0;" id="importFile" (change)="handleFileInput($event.target,this.uid+this.products.length+'')" formControlName="urlImg">
+          <img [src]="this.file.path" alt="" (click)="chooseFile()" id="importFileImage">
+        </div>
+        <div class="col-md-10">
+          <div>
+            <span class="fw--bold row">Tên sản phẩm*</span>
+            <input type="text" placeholder="Nhập tên sản phẩm" formControlName="name" [(ngModel)]="product.name">
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6 --group">
+              <div>
+                <span class="fw--bold row">Danh mục*</span>
+                <select name="" id="" class="--border" formControlName="category" [(ngModel)]="product.category">
+                  <option value="" disabled="disabled" selected="selected">Vui lòng chọn danh mục</option>
+                  <option [value]="category" *ngFor="let category of this.categories;index as i">{{category}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6 --group">
+              <span class="fw--bold row">Thương hiệu</span>
+              <input type="text" placeholder="Nhập thương hiệu" formControlName="trademark" [(ngModel)]="product.trademark">
+            </div>
+          </div>
+          <div class="row --mg--top--30">
+            <div class="flex-center-ver">
+              <input type="checkbox" id="filterBYAttributeOfProduct">
+              <span>Phân loại theo thuộc tính hàng hóa</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <span class="fw--bold row">Giá nhập*</span>
+            <input type="text" placeholder="0 VND" formControlName="costPrice" [(ngModel)]="product.costPrice">
+          </div>
+          <div>
+            <span class="fw--bold row">Giá bán buôn/bán sỉ*</span>
+            <input type="text" placeholder="0 VND" formControlName="wholesalePrice" [(ngModel)]="product.wholesalePrice">
+          </div>
+          <div>
+            <span class="fw--bold row">Giá bán lẻ*</span>
+            <input type="text" placeholder="0 VND" formControlName="retailPrice" [(ngModel)]="product.retailPrice">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <span class="fw--bold row">Đơn vị*</span>
+            <div class="row --groupItem">
+              <div class="col-md-7">
+                <input type="text" placeholder="Nhập đơn vị" formControlName="unit" [(ngModel)]="product.unit">
+              </div>
+              <div class="col-md-5">
+                <div class="--border button" (click)="boxActive=2"><i class="fa-solid fa-list-ol"></i><span>Danh sách đơn vị</span></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <span class="fw--bold row">Barcode</span>
+            <div class="row flex-center-ver">
+              <div class="col-md-11"><input type="text" placeholder="Nhập barcode hoặc sử dụng máy scan" formControlName="barcode" [(ngModel)]="product.barcode"></div>
+              <div class="col-md-1">
+                <i class="fa-solid fa-rotate-right"></i>
+              </div>
+            </div>
+          </div>
+          <div>
+            <span class="fw--bold row">Số lượng cảnh báo hết hàng*</span>
+            <input type="text" placeholder="Nhập số lượng cảnh báo" formControlName="numWarning" [(ngModel)]="product.numWarning">
+          </div>
+        </div>
+      </div>
+      <div class="row --mg--top--10">
+        <div class="--groupItem">
+          <input type="checkbox" [checked]="this.product.allow" (change)="this.product.allow=allow.checked" #allow>
+          <span>Cho phép bán</span>
+        </div>
+        <div class="--groupItem">
+          <input type="checkbox" [checked]="this.product.greatSelling" (change)="this.product.greatSelling=greatSelling.checked" #greatSelling>
+          <span>Bán nhanh</span>
+        </div>
+        <div class="--groupItem">
+          <input type="checkbox">
+          <span>Lô, hạn sử dụng</span>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+  <div class="card container" *ngIf="tab==2" [formGroup]="modifyProductForm">
+    <div class="--mg--bottom--20">
+      <div class="row">
+        <div class="col-md-5 flex-center-ver">
+          <h4 class="txBlue --col--3">Thông tin sản phẩm</h4>
+        </div>
+        <div class="col-md-7 flex-center-ver listButton">
+          <button class="button bgBlue txWhite" >
+            <i class="fa-solid fa-gear"></i>
+            <span>Cấu hình in tem</span>
+          </button>
+          <button class="button" disabled="disabled">
+            <i class="fa-solid fa-print"></i>
+            <span>In tem sản phẩm</span>
+          </button>
+          <button class="button" disabled="disabled">
+            <i class="fa-solid fa-print"></i>
+            <span>In tem lô</span>
+          </button>
+          <button class="button bgOrange-2 txWhite" (click)="deleteProduct()" >
+            <i class="fa-solid fa-trash"></i>
+            <span>Xóa</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <form class="modifyProduct">
+      <div class="row flex-center-ver">
+        <div class="col-md-2">
+          <input type="file" style="width: 0;height: 0;" id="importFile" (change)="handleFileInput($event.target,this.uid+this.detailProduct.id);" formControlName="urlImg">
+          <img [src]="this.file.path" alt="" (click)="chooseFile()" id="importFileImagec">
+        </div>
+        <div class="col-md-10">
+          <div>
+            <span class="fw--bold row">Tên sản phẩm*</span>
+            <input type="text" placeholder="Nhập tên sản phẩm" formControlName="name" [(ngModel)]="detailProduct.name">
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6 --group">
+              <div>
+                <span class="fw--bold row">Danh mục*</span>
+                <select name="" id="" class="--border" formControlName="category" [(ngModel)]="detailProduct.category">
+                  <option value="" disabled="disabled" selected="selected">Vui lòng chọn danh mục</option>
+                  <option [value]="category" *ngFor="let category of this.categories;index as i">{{category}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6 --group">
+              <span class="fw--bold row">Thương hiệu</span>
+              <input type="text" placeholder="Nhập thương hiệu" formControlName="trademark" [(ngModel)]="detailProduct.trademark">
+            </div>
+          </div>
+          <div class="row --mg--top--30">
+            <div class="flex-center-ver">
+              <input type="checkbox">
+              <span>Phân loại theo thuộc tính hàng hóa</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <span class="fw--bold row">Giá nhập*</span>
+            <input type="text" placeholder="0 VND" formControlName="costPrice" [(ngModel)]="detailProduct.costPrice">
+          </div>
+          <div>
+            <span class="fw--bold row">Giá bán buôn/bán sỉ*</span>
+            <input type="text" placeholder="0 VND" formControlName="wholesalePrice" [(ngModel)]="detailProduct.wholesalePrice">
+          </div>
+          <div>
+            <span class="fw--bold row">Giá bán lẻ*</span>
+            <input type="text" placeholder="0 VND" formControlName="retailPrice" [(ngModel)]="detailProduct.retailPrice">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <span class="fw--bold row">Đơn vị*</span>
+            <div class="row --groupItem">
+              <div class="col-md-7">
+                <input type="text" placeholder="Nhập đơn vị" formControlName="unit" [(ngModel)]="detailProduct.unit">
+              </div>
+              <div class="col-md-5">
+                <div class="--border button" (click)="boxActive=2"><i class="fa-solid fa-list-ol" ></i><span>Danh sách đơn vị</span></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <span class="fw--bold row">Barcode</span>
+            <div class="row flex-center-ver">
+              <div class="col-md-11"><input type="text" placeholder="Nhập barcode hoặc sử dụng máy scan"></div>
+              <div class="col-md-1">
+                <i class="fa-solid fa-rotate-right"></i>
+              </div>
+            </div>
+          </div>
+          <div>
+            <span class="fw--bold row">Số lượng cảnh báo hết hàng*</span>
+            <input type="text" placeholder="Nhập số lượng cảnh báo" formControlName="numWarning" [(ngModel)]="detailProduct.numWarning">
+          </div>
+        </div>
+      </div>
+      <div class="row --mg--top--10">
+        <div class="--groupItem">
+          <input type="checkbox" [checked]="this.detailProduct.allow" (change)="this.detailProduct.allow=allow.checked" #allow>
+          <span>Cho phép bán</span>
+        </div>
+        <div class="--groupItem">
+          <input type="checkbox">
+          <span>Bán nhanh</span>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+
+  <div class="backgroundVirtual" *ngIf="boxActive!=0">
+    <div class="box" *ngIf="boxActive==1">
+      <div class="--mg--bottom--20">
+        <div class="row">
+          <div class="col-md-4 flex-center-ver">
+            <h4 class="txBlue --col--3">Danh mục sản phẩm</h4>
+          </div>
+          <div class="col-md-4">
+            <div class="search">
+              <input type="text" placeholder="Nhập tên danh mục" #inputCategory>
+              <i class="fa-solid fa-plus" (click)="addCategory(inputCategory.value);inputCategory.value=''"></i>
+
+            </div>
+          </div>
+
+          <div class="col-md-4 flex-center-ver listButton">
+            <i class="fa-solid fa-xmark" (click)="boxActive=0"></i>
+          </div>
+        </div>
+      </div>
+      <div class="content-box">
+          <div class="table--body">
+            <div class="table--body--content">
+              <div class="table--row" *ngFor="let category of this.categories;index as i">
+                <div class="row">
+                  <div class="content--row">
+                    <span>{{category}}</span>
+                    <i class="fa-solid fa-circle-minus" (click)="deleteCategory(i)"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="box" *ngIf="boxActive==2">
+      <div class="--mg--bottom--20">
+        <div class="row">
+          <div class="col-md-6 flex-center-ver">
+            <h4 class="txBlue --col--3">Lựa chọn đơn vị</h4>
+          </div>
+
+
+          <div class="col-md-6 flex-center-ver listButton">
+            <i class="fa-solid fa-xmark" (click)="this.boxActive=0"></i>
+          </div>
+        </div>
+      </div>
+      <div class="content-box">
+          <div class="table--body">
+            <div class="table--body--content">
+              <div class="table--row" *ngFor="let unit of this.units;index as i">
+                <div class="row" (click)="chooseUnit(unit)">
+                  <div class="content--row">
+                    <span>{{unit}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
